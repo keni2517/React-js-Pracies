@@ -1,7 +1,6 @@
 import React from "react";
 
 
-
 function Para1(){
     return <p>A paragraph is a series of sentences that are organized and coherent, and are all related to a single topic. Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.</p>
 }
@@ -11,10 +10,8 @@ function Para2(){
 function Para3(){
     return <p>A paragraph is a series of sentences that are organized and coherent, and are all related to a single topic. Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.</p>
 }
-function Para4(){var sty= {
-    color : "red"
-}
-    return <p sty={sty}>A paragraphcccc is a series of sentences that are organized and coherent, and are all related to a single topic. Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.</p>
+function Para4(){
+    return <p>A paragraphcccc is a series of sentences that are organized and coherent, and are all related to a single topic. Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.</p>
 }
 function Para5(){
     return <p>A paragraph is a series of sentences that are organized and coherent, and are all related to a single topic. Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.</p>

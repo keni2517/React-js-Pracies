@@ -1,0 +1,27 @@
+p:nth-of-type(1){
+    color: blueviolet;
+    border: 5px;
+    background-color: chartreuse;
+}
+p:nth-of-type(2){
+    color: red;
+    border: 5px;
+    background-color: blue;
+}
+p:nth-of-type(3){
+    color: blueviolet;
+    border: 5px;
+    background-color: brown;
+}
+p:nth-of-type(5){
+    color: blueviolet;
+    border: 5px;
+    background-color: rgb(165, 42, 128);
+}
+
+
+
+ol{
+    list-style: none;
+    text-align: start;
+}
