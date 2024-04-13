@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import Card from '../../../Lecture-7/myapp/src/Components/Carsp';
-
+import BasicTable from './Components/Table';
 function App() {
   return (
-   <Card/>
-    
+    <div className="App">
+      <BasicTable/>
+    </div>
   );
 }
 
 export default App;
+
+
