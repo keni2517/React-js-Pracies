@@ -1,0 +1,44 @@
+.footer-widget-links ul li a i{
+    width: 35px;
+    color: black;
+    font-size: 18px;
+    transition: all .2s ease-out 0s;
+}
+
+.footer-widget-title{
+    text-decoration: underline;
+}
+
+.footer-widget-links ul li{
+    margin-bottom: 11px;
+}
+
+.footer-widget-links ul li a{
+    color: #777;   
+}
+
+.footer-widget-links ul li a:hover, li a i:hover{
+    color: #D51242;
+    transform: translateX(3px);
+      
+}
+
+.footer-widget-links ul li i:hover{
+    color: #D51242; 
+    transform: translateX(3px);
+}
+
+.btn{
+    padding: 13px 20px;
+    background-color: #D51242;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.hover:hover{
+    color: #D51242;
+}
+
+ul li{
+    list-style: none;
+}
