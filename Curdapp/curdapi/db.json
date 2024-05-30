@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "id": "27ba",
+      "firstname": "keni",
+      "lastname": "dsa",
+      "age": "52",
+      "city": "vadodra"
+    },
+    {
+      "id": "cc59",
+      "firstname": "keni",
+      "lastname": "chaman",
+      "age": "18",
+      "city": "ttyh"
+    }
+  ]
+}

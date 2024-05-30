@@ -79,7 +79,7 @@ const Navbar = () => {
                                     <li><a href="/complete-website">Complete Website</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/about-us">ABOUT US</a></li>
+                            <li><a href="/error">Error</a></li>
                             <li><a href="/contact-us">CONTACT US</a></li>
                         </ul>
                     </div>
