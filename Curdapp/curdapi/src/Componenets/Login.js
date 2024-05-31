@@ -58,9 +58,9 @@ const Login = () => {
     const getEmail = localStorage.getItem("Email");
     const getPassword = localStorage.getItem("Password");
 
-    const backTohome = () => {
-        navigate("/home");
-    }
+    // const backTohome = () => {
+    //     navigate("/home");
+    // }
 
     function onLoginFun(e) {
         e.preventDefault();
@@ -70,6 +70,7 @@ const Login = () => {
             show_Error();
         } else {
             showAlert();
+            navigate("/home");
         }
     }
 
@@ -134,7 +135,7 @@ const Login = () => {
                                     </div>
                                     <div>
                                         <button
-                                        onClick={backTohome}
+                                       
                                             type="submit"
                                             className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                                         >

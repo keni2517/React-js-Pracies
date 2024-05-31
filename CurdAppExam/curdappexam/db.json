@@ -1,0 +1,16 @@
+{
+    "posts": [
+        {
+            "Firstname": "keni",
+            "Lastname": "kakadiya",
+            "Age": 18,
+            "City": "surat"
+        },
+        {
+            "Firstname": "mahek",
+            "Lastname": "Italiya",
+            "Age": 19,
+            "City": "Gujarat"
+        }
+    ]
+}

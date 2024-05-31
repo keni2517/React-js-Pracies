@@ -44,23 +44,23 @@ const Register = () => {
 
     function onSubmitRegister(e) {
         e.preventDefault();
-        if ( fname !== email !== password) {
+        if ( !fname || !email || !password) {
             show_Error_Alert()
         }
-            // showAlert()
-            // localStorage.setItem("Firstname", fname);
-            // localStorage.setItem("Email", email);
-            // localStorage.setItem("Password", password);
             else {
-                const newUser = {
-                  firstname: fname,
-                  email: email,
-                  password: password,
-                };
-                const users = JSON.parse(localStorage.getItem("users")) || [];  // Retrieve existing users from localStorage
-                users.push(newUser);   // Add the new user to the array      
-                localStorage.setItem("users", JSON.stringify(users));    //Store the updated array back in localStorage
-                showAlert();
+                // const newUser = {
+                //   firstname: fname,
+                //   email: email,
+                //   password: password,
+                // };
+                // const users = JSON.parse(localStorage.getItem("users")) || [];  // Retrieve existing users from localStorage
+                // users.push(newUser);   // Add the new user to the array      
+                // localStorage.setItem("users", JSON.stringify(users));    //Store the updated array back in localStorage
+                // showAlert();
+                showAlert()
+            localStorage.setItem("Firstname", fname);
+            localStorage.setItem("Email", email);
+            localStorage.setItem("Password", password);
                 navigate("/login");
               }
     }
@@ -134,7 +134,6 @@ Email address{' '}
                                     </div>
                                     <div>
                                         <button
-                                            onClick={backTohome}
                                             type="submit"
                                             className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                                         >
