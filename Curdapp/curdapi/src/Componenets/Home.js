@@ -25,27 +25,42 @@ import Edit from './Edit';
 // ]
 
 export function TableOne() {
-  const[data ,setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [serchTerm,setSerchTerm] = useState('');
+  const [currentpage, setCurrentpage] = useState(1);
 
-  const loaduser = async() => {
+  const filterdata = data.filter(posts => posts.firstname.toLowerCase().includes(serchTerm.toLowerCase())|| posts.lastname.toLowerCase().includes(serchTerm.toLowerCase()))
+
+
+  const recordPerpage = 2;
+  const LastIndex = currentpage * recordPerpage;
+  const FirstIndex = LastIndex - recordPerpage;
+  const records = filterdata.slice(FirstIndex , LastIndex);
+  const npage = Math.ceil(filterdata.length / recordPerpage);
+  const numbers = [...Array(npage + 1).keys()].slice(1)
+
+
+  const loaduser = async () => {
     const res = await axios.get("http://localhost:3001/posts")
-    console.log(res.data ,"res");
+    console.log(res.data, "res");
     setData(res.data)
   }
 
-  useEffect (() =>{
+  useEffect(() => {
     loaduser();
-  },[])
+  }, [])
 
   const onDelet = (id) => {
     axios.delete(`http://localhost:3001/posts/${id}`)
-    .then((res) =>{
-      loaduser();
-    })
-    .catch((error) =>{
-      console.log(error , "error");
-    })
+      .then((res) => {
+        loaduser();
+      })
+      .catch((error) => {
+        console.log(error, "error");
+      })
   }
+  
+
   return (
     <>
       <section className="mx-auto w-full max-w-7xl px-4 py-4">
@@ -53,12 +68,20 @@ export function TableOne() {
           <div>
             <h2 className="text-lg font-semibold">Student Table</h2>
           </div>
+          <div class="flex grow justify-end">
+      <input
+        class="flex h-10 w-[250px] rounded-md bg-gray-100 px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 me-96"
+        type="text"
+        placeholder="Serach"
+        onChange={(e) => setSerchTerm(e.target.value)}
+      />
+    </div>
           <div>
             <button
               type="button"
               className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
-             <Link to ="/create">Add new Student</Link>
+              <Link to="/create">Add new Student</Link>
             </button>
           </div>
         </div>
@@ -86,7 +109,7 @@ export function TableOne() {
                         scope="col"
                         className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
                       >
-                       Age
+                        Age
                       </th>
 
                       <th
@@ -107,7 +130,7 @@ export function TableOne() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {data.map((person) => (
+                    {records.map((person) => (
                       <tr key={person.id}>
                         <td className="whitespace-nowrap px-4 py-4">
                           <div className="flex items-center">
@@ -121,22 +144,22 @@ export function TableOne() {
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
                           <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                           {person.age}
+                            {person.age}
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
                           {person.city}
                         </td>
                         <td className="whitespace-nowrap ps-6 py-4 text-sm font-medium">
-                         <Link to={`/edit/${person.id}`}>
-                          <button><a href="#" className="text-gray-700">
+                          <Link to={`/edit/${person.id}`}>
+                            <button><a href="#" className="text-gray-700">
                               Edit
-                          </a></button>
+                            </a></button>
                           </Link>
                         </td>
                         <td className="whitespace-nowrap py-4 text-sm font-medium">
-                          <button onClick={() =>onDelet(person.id)}><a href="#" className="text-gray-700">
-                           Delete
+                          <button onClick={() => onDelet(person.id)}><a href="#" className="text-gray-700">
+                            Delete
                           </a></button>
                         </td>
                       </tr>
@@ -148,6 +171,44 @@ export function TableOne() {
           </div>
         </div>
       </section>
+       <div class="flex items-center justify-center">
+                  <a
+                    href="#"
+                    class="mx-1 cursor-not-allowed text-sm font-semibold text-gray-900"
+                    onClick={perPage}
+                  >
+                    ← Previous
+                  </a>
+                  <a className='flex items-center '>
+                    {
+                      numbers.map((n, i) =>(
+                        <a className={`page-items ${currentpage === n ? 'active'  : ''} mx-1 rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105`} key={i}>
+                           <a
+                    href="#"
+           onClick={()=>changepage(n)}>
+                      {n}
+                    </a>
+                        </a>
+                      ))
+                    }
+                  </a>
+                  <a href="#" class="mx-2 text-sm font-semibold text-gray-900" onClick={nextpage}>
+                    Next →
+                  </a>
+                </div>
     </>
   )
+  function perPage(){
+    if(currentpage !==1){
+      setCurrentpage(currentpage-1);
+    }
+  }
+  function changepage(id){
+    setCurrentpage(id)
+  }
+  function nextpage(){
+    if(currentpage !== npage){
+      setCurrentpage(currentpage+1);
+    }
+  }
 }

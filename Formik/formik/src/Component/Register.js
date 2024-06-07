@@ -1,21 +1,40 @@
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
-import {useFormik}from 'formik'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
+const SignupSchema = Yup.object({
+  Password: Yup.string()
+    .min(2, 'Too Short!')
+    .max(8, 'Too Long!')
+    .required('Password is Required'),
+  Email: Yup.string().email('Invalid email').required('Email is Required'),
+  Fullname: Yup.string()
+    .min(2, 'Too Short!')
+    .max(8, 'Too Long!')
+    .required('Full Name is Required'),
+  ConPassword: Yup.string()
+    .min(2, 'Too Short!')
+    .max(40, 'Too Long!')
+    .required('ConformPassword is Required'),
+});
+
 
 export function SignUpOne() {
-    const {values , handleSubmit , handleChange , errors} = useFormik({
-        initialValues:{
-            Fullname:'',
-            Email:'',
-            Password:'',
-            ConPassword:''
-        },
-        onSubmit : (value) =>{
-            console.log(value , "value");
-        }
-    })
+  const { values, handleSubmit, handleChange, errors, touched } = useFormik({
+    initialValues: {
+      Fullname: '',
+      Email: '',
+      Password: '',
+      ConPassword: ''
+    },
+    validationSchema: SignupSchema,
+    onSubmit: (value) => {
+      console.log(value, "value");
+    }
+  })
 
-    console.log(values, "values");
+  console.log(values, "values");
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -49,6 +68,7 @@ export function SignUpOne() {
                       onChange={handleChange}
                       value={values.Fullname}
                     ></input>
+                    {errors.Fullname && touched.Fullname ? <p style={{ color: "red" }}>{errors.Fullname}</p> : null}
                   </div>
                 </div>
                 <div>
@@ -66,6 +86,7 @@ export function SignUpOne() {
                       onChange={handleChange}
                       value={values.Email}
                     ></input>
+                    {errors.Email && touched.Email ? <p style={{ color: "red" }}>{errors.Email}</p> : null}
                   </div>
                 </div>
                 <div>
@@ -85,6 +106,7 @@ export function SignUpOne() {
                       onChange={handleChange}
                       value={values.Password}
                     ></input>
+                    {errors.Password && touched.Password ? <p style={{ color: "red" }}>{errors.Password}</p> : null}
                   </div>
                 </div>
                 <div>
@@ -104,11 +126,12 @@ export function SignUpOne() {
                       onChange={handleChange}
                       value={values.ConPassword}
                     ></input>
+                    {errors.ConPassword && touched.ConPassword ? <p style={{ color: "red" }}>{errors.ConPassword}</p> : null}
                   </div>
                 </div>
                 <div>
                   <button
-                    type="button"
+                    type="submit"
                     className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   >
                     Create Account <ArrowRight className="ml-2" size={16} />

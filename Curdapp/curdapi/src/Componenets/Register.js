@@ -7,63 +7,137 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function showAlert() {
-    toast.success('Login Succesfully', {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-    });
-}
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
-function show_Error_Alert() {
-    toast.error('Please fill all fields', {
-        position: "bottom-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-    });
-}
+// function showAlert() {
+//     toast.success('Loin Succesfully', {
+//         position: "bottom-right",
+//         autoClose: 1000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
+
+// function show_Error_Alert() {
+//     toast.error('Please fill all fields', {
+//         position: "bottom-right",
+//         autoClose: 1000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
+// function showAlert() {
+//     toast.error('Please fill all fields', {
+//         position: "bottom-right",
+//         autoClose: 1000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
+
+const SignupSchema = Yup.object({
+    Password: Yup.string()
+        .min(2, 'Too Short!')
+        .max(8, 'Too Long!')
+        .required('Password is Required'),
+    Email: Yup.string().email('Invalid email').required('Email is Required'),
+    Fullname: Yup.string()
+        .min(2, 'Too Short!')
+        .max(80, 'Too Long!')
+        .required('Full Name is Required')
+});
+
 
 const Register = () => {
-
     const navigate = useNavigate();
-    const [fname, setFname] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
 
-    function onSubmitRegister(e) {
-        e.preventDefault();
-        if ( !fname || !email || !password) {
-            show_Error_Alert()
-        }
-            else {
-                // const newUser = {
-                //   firstname: fname,
-                //   email: email,
-                //   password: password,
-                // };
-                // const users = JSON.parse(localStorage.getItem("users")) || [];  // Retrieve existing users from localStorage
-                // users.push(newUser);   // Add the new user to the array      
-                // localStorage.setItem("users", JSON.stringify(users));    //Store the updated array back in localStorage
-                // showAlert();
-                showAlert()
-            localStorage.setItem("Firstname", fname);
-            localStorage.setItem("Email", email);
-            localStorage.setItem("Password", password);
-                navigate("/login");
-              }
-    }
+    const { values, handleSubmit, handleChange, errors, touched } = useFormik({
+        initialValues: {
+            Fullname: '',
+            Email: '',
+            Password: ''
+        },
+        validationSchema: SignupSchema,
+        onSubmit: (values) => {
+
+            const newUser = {
+                firstname: values.Fullname,
+                email: values.Email,
+                password: values.Password,
+            };
+            const users = JSON.parse(localStorage.getItem("users")) || [];  // Retrieve existing users from localStorage
+            users.push(newUser);   // Add the new user to the array      
+            localStorage.setItem("users", JSON.stringify(users));    //Store the updated array back in localStorage
+            console.log("values");
+            navigate("/login");
+        },
+    });
+
+
+    // const navigate = useNavigate();
+    // const [fname, setFname] = useState();
+    // const [email, setEmail] = useState();
+    // const [password, setPassword] = useState();
+
+    // function onSubmitRegister(e) {
+    //     e.preventDefault();
+    //     if ( !fname || !email || !password) {
+    //         show_Error_Alert()
+    //     }
+    //         else {
+    //             const newUser = {
+    //               firstname: fname,
+    //               email: email,
+    //               password: password,
+    //             };
+    //             const users = JSON.parse(localStorage.getItem("users")) || [];  // Retrieve existing users from localStorage
+    //             users.push(newUser);   // Add the new user to the array      
+    //             localStorage.setItem("users", JSON.stringify(users));    //Store the updated array back in localStorage
+    //             //showAlert();
+    //         // localStorage.setItem("Firstname", fname);
+    //         // localStorage.setItem("Email", email);
+    //         // localStorage.setItem("Password", password);
+    //         // // showAlert()
+    //         alert("successfully")
+    //         // // showToastMessage()
+    //         navigate("/login");
+    //           }
+    // }
+    // const navigate = useNavigate();
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [error, setError] = useState('');
+
+    // const handleRegister = () => {
+    //   if (!username || !password || !email) {
+    //     setError(show_Error_Alert()); 
+    //   }
+    //   else{
+    //   localStorage.setItem('username', username);
+    //   localStorage.setItem('password', password);
+    //   localStorage.setItem('email', email);
+    //   setError(showAlert());
+    //   navigate('/login')
+    //   // You can add further validation, error handling, or redirection logic here
+    //   }
+    // };
 
     return (
         <div>
@@ -83,7 +157,7 @@ const Register = () => {
                                     Sign In
                                 </Link>
                             </p>
-                            <form onSubmit={onSubmitRegister} action="#" method="POST" className="mt-8">
+                            <form action="#" method="POST" className="mt-8" onSubmit={handleSubmit}>
                                 <div className="space-y-5">
                                     <div>
                                         <label htmlFor="name" className="text-base font-medium text-gray-900">
@@ -96,14 +170,17 @@ const Register = () => {
                                                 type="text"
                                                 placeholder="Full Name"
                                                 id="name"
-                                                onChange={(e) => setFname(e.target.value)}
+                                                name='Fullname'
+                                                onChange={handleChange}
+                                                value={values.Fullname}
                                             ></input>
+                                            {errors.Fullname && touched.Fullname ? <p style={{ color: "red" }}>{errors.Fullname}</p> : null}
                                         </div>
                                     </div>
                                     <div>
                                         <label htmlFor="email" className="text-base font-medium text-gray-900">
                                             {' '}
-Email address{' '}
+                                            Email address{' '}
                                         </label>
                                         <div className="mt-2">
                                             <input
@@ -111,8 +188,11 @@ Email address{' '}
                                                 type="email"
                                                 placeholder="Email"
                                                 id="email"
-                                                onChange={(e) => setEmail(e.target.value)}
+                                                name='Email'
+                                                onChange={handleChange}
+                                                value={values.Email}
                                             ></input>
+                                            {errors.Email && touched.Email ? <p style={{ color: "red" }}>{errors.Email}</p> : null}
                                         </div>
                                     </div>
                                     <div>
@@ -128,8 +208,11 @@ Email address{' '}
                                                 type="password"
                                                 placeholder="Password"
                                                 id="password"
-                                                onChange={(e) => setPassword(e.target.value)}
+                                                name='Password'
+                                                onChange={handleChange}
+                                                value={values.Password}
                                             ></input>
+                                            {errors.Password && touched.Password ? <p style={{ color: "red" }}>{errors.Password}</p> : null}
                                         </div>
                                     </div>
                                     <div>
@@ -139,6 +222,7 @@ Email address{' '}
                                         >
                                             Register <ArrowRight className="ml-2" size={16} />
                                         </button>
+
                                     </div>
                                 </div>
                             </form>
@@ -153,8 +237,8 @@ Email address{' '}
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24"
                                             fill="currentColor"
->
-<path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
+                                        >
+                                            <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
                                         </svg>
                                     </span>
                                     Sign up with Google

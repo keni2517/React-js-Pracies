@@ -7,72 +7,123 @@ import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function showAlert() {
-    toast.success('Login Succesfully', {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-    });
-}
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
-function show_Error() {
-    toast.error('Please fill correct details', {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-    });
-}
+const SignupSchema = Yup.object({
+    Password: Yup.string()
+        .min(2, 'Too Short!')
+        .max(8, 'Too Long!')
+        .required('Password is Required'),
+    Email: Yup.string().email('Invalid email').required('Email is Required'),
+});
 
-function show_Error_Alert() {
-    toast.error('Please fill all fields', {
-        position: "bottom-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-    });
-}
+// function showAlert() {
+//     toast.success('Login Succesfully', {
+//         position: "bottom-right",
+//         autoClose: 5000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
+
+// function show_Error() {
+//     toast.error('Please fill correct details', {
+//         position: "bottom-right",
+//         autoClose: 5000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
+
+// function show_Error_Alert() {
+//     toast.error('Please fill all fields', {
+//         position: "bottom-right",
+//         autoClose: 1000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "colored",
+//         transition: Bounce,
+//     });
+// }
 
 const Login = () => {
 
     const navigate = useNavigate()
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
 
-    const getEmail = localStorage.getItem("Email");
-    const getPassword = localStorage.getItem("Password");
+    const { values, handleSubmit, handleChange, errors, touched } = useFormik({
+        initialValues: {
+            Email: '',
+            Password: ''
+        },
+        validationSchema: SignupSchema,
+        onSubmit: (values) => {
 
-    // const backTohome = () => {
-    //     navigate("/home");
+            const crudUsers = JSON.parse(localStorage.getItem("users"));
+            const loginuser = crudUsers.find(loginuser => loginuser.Email === values.Email && loginuser.Password === values.Password)
+
+            if (loginuser) {
+                // showAlert()
+                alert("successfully registered");
+                navigate('/home');
+            }
+
+            if (!loginuser) {
+                //   show_Error()
+                alert("fill cureedrypt");
+            }
+        },
+    });
+
+
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+
+    // const getEmail = localStorage.getItem("Email");
+    // const getPassword = localStorage.getItem("Password");
+
+
+    // function onLoginFun(e) {
+    //     e.preventDefault();
+    //     const crudUsers = JSON.parse(localStorage.getItem("users"));
+    //     const loginuser = crudUsers.find(loginuser => loginuser.email === email && loginuser.password === password)
+    //     if (!email && !password) {
+    //         show_Error_Alert();
+    //     }
+
+    //     if (loginuser) {
+    //         // showAlert()
+    //         alert("successfully registered");
+
+    //         navigate('/home');
+    //     }
+
+    //     if (!loginuser) {
+    //         //   show_Error()
+    //         alert("fill cureedrypt");
+    //     }
+
+
+    //     // else if (email !== getEmail && password !== getPassword) {
+    //     //   show_Error();
+    //     // } 
+    //     // else {
+    //     //   showAlert();
+    //     // }
     // }
-
-    function onLoginFun(e) {
-        e.preventDefault();
-        if (!email && !password) {
-            show_Error_Alert();
-        } else if (email !== getEmail && password !== getPassword) {
-            show_Error();
-        } else {
-            showAlert();
-            navigate("/home");
-        }
-    }
 
     return (
         <div>
@@ -92,7 +143,7 @@ const Login = () => {
                                     Create a free account
                                 </a>
                             </p>
-                            <form onSubmit={onLoginFun} action="#" method="POST" className="mt-8">
+                            <form onSubmit={handleSubmit} action="#" method="POST" className="mt-8">
                                 <div className="space-y-5">
                                     <div>
                                         <label htmlFor="" className="text-base font-medium text-gray-900">
@@ -104,12 +155,15 @@ const Login = () => {
                                                 className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                                 type="email"
                                                 placeholder="Email"
-                                                onChange={(e) => setEmail(e.target.value)}
+                                                name='Email'
+                                                value={values.Email}
+                                                onChange={handleChange}
                                             ></input>
+                                            {errors.Email && touched.Email ? <p style={{ color: "red" }}>{errors.Email}</p> : null}
                                         </div>
                                     </div>
 
-<div>
+                                    <div>
                                         <div className="flex items-center justify-between">
                                             <label htmlFor="" className="text-base font-medium text-gray-900">
                                                 {' '}
@@ -129,13 +183,16 @@ const Login = () => {
                                                 className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                                 type="password"
                                                 placeholder="Password"
-                                                onChange={(e) => setPassword(e.target.value)}
+                                                value={values.Password}
+                                                name='Password'
+                                                onChange={handleChange}
                                             ></input>
+                                            {errors.Password && touched.Password ? <p style={{ color: "red" }}>{errors.Password}</p> : null}
                                         </div>
                                     </div>
                                     <div>
                                         <button
-                                       
+
                                             type="submit"
                                             className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                                         >
@@ -163,7 +220,7 @@ const Login = () => {
                                 </button>
                                 <button
                                     type="button"
-className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+                                    className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
                                 >
                                     <span className="mr-2 inline-block">
                                         <svg
