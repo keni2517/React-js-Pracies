@@ -32,13 +32,16 @@ export function TableOne() {
   const filterdata = data.filter(posts => posts.firstname.toLowerCase().includes(serchTerm.toLowerCase())|| posts.lastname.toLowerCase().includes(serchTerm.toLowerCase()))
 
 
-  const recordPerpage = 2;
+  const recordPerpage = 5;
   const LastIndex = currentpage * recordPerpage;
   const FirstIndex = LastIndex - recordPerpage;
   const records = filterdata.slice(FirstIndex , LastIndex);
   const npage = Math.ceil(filterdata.length / recordPerpage);
   const numbers = [...Array(npage + 1).keys()].slice(1)
 
+  const data1 = [...records].sort((a, b) => (a.firstname < b.firstname ? -1 : 1));
+
+data1.map((d) => console.log("without conversion", d.firstname));
 
   const loaduser = async () => {
     const res = await axios.get("http://localhost:3001/posts")
@@ -130,11 +133,12 @@ export function TableOne() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {records.map((person) => (
+                    {data1.map((person) => (
                       <tr key={person.id}>
                         <td className="whitespace-nowrap px-4 py-4">
                           <div className="flex items-center">
                             <div className="ml-4">
+                              {/* <div className="text-sm  text-gray-900">{person.firstname}</div> */}
                               <div className="text-sm  text-gray-900">{person.firstname}</div>
                             </div>
                           </div>
